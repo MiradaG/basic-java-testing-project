@@ -41,4 +41,3 @@ This is an advanced-level microservices project for user management, built using
 
 ## CI/CD
 The project includes a GitHub Actions pipeline for continuous integration.
-"# basic-java-testing-project" 
