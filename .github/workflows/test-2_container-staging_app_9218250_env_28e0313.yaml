@@ -2,10 +2,11 @@ name: test-2_container-staging_app_9218250_env_28e0313 Pipeline (Skyu Generated)
 'on':
   push:
     branches:
+      - qa
       - staging
-      - release/*
     tags:
       - qa
+      - severity
     paths-ignore:
       - .github/workflows/**
       - .trivyignore
@@ -13,7 +14,7 @@ name: test-2_container-staging_app_9218250_env_28e0313 Pipeline (Skyu Generated)
       - README.md
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_280a5b15-496a-43ae-a7b4-3b5a1ccb9643
+    types: pipeline_297b2b48-cfb4-4f6f-9f28-d098be1d788e
 env:
   ENCODED_PIPELINE_SECRET: >-
     ${{secrets.BASICJAVATESTINGPROJECT_TEST2_CONTAINERSTAGING_APP_9218250_ENV_28E0313}}
