@@ -1,0 +1,601 @@
+openapi: 3.0.0
+info:
+  title: Combined API Specification
+  version: 1.0.0
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        description: User registration details
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                email:
+                  type: string
+                  format: email
+              required:
+              - username
+              - password
+              - email
+      responses:
+        '200':
+          description: Successful registration
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /api/auth/login:
+    post:
+      summary: Login user
+      requestBody:
+        description: User login credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+              - username
+              - password
+      responses:
+        '200':
+          description: Successful login
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /api/auth/refresh:
+    post:
+      summary: Refresh JWT token
+      responses:
+        '200':
+          description: Token refreshed successfully
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /api/auth/logout:
+    post:
+      summary: Logout user
+      responses:
+        '200':
+          description: Successful logout
+        '500':
+          description: Internal Server Error
+  /api/auth/me:
+    get:
+      summary: Get authenticated user details
+      responses:
+        '200':
+          description: User details
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/users:
+    get:
+      summary: List all users
+      responses:
+        '200':
+          description: List of users
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+    post:
+      summary: Create a new user
+      requestBody:
+        description: User details to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+              required:
+              - username
+              - email
+              - password
+      responses:
+        '201':
+          description: User created successfully
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/users/{id}:
+    get:
+      summary: Get user details by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the user
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: User details
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+    put:
+      summary: Update user details by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the user
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Updated user details
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: User updated successfully
+        '400':
+          description: Bad Request
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete user by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the user
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '204':
+          description: User deleted successfully
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/users/{id}/activate:
+    patch:
+      summary: Activate user by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the user
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: User activated successfully
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/users/{id}/deactivate:
+    patch:
+      summary: Deactivate user by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the user
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: User deactivated successfully
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/roles:
+    get:
+      summary: List all roles
+      responses:
+        '200':
+          description: List of roles
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+    post:
+      summary: Create a new role
+      requestBody:
+        description: Role details to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+              required:
+              - name
+      responses:
+        '201':
+          description: Role created successfully
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/roles/{id}:
+    get:
+      summary: Get role details by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the role
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Role details
+        '404':
+          description: Role not found
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+    put:
+      summary: Update role details by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the role
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Updated role details
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+              required:
+              - name
+      responses:
+        '200':
+          description: Role updated successfully
+        '400':
+          description: Bad Request
+        '404':
+          description: Role not found
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete role by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the role
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '204':
+          description: Role deleted successfully
+        '404':
+          description: Role not found
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/roles/{id}/assign:
+    patch:
+      summary: Assign role by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the role
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: User ID to assign the role to
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  format: int64
+              required:
+              - userId
+      responses:
+        '200':
+          description: Role assigned successfully
+        '400':
+          description: Bad Request
+        '404':
+          description: Role or User not found
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/admin/stats:
+    get:
+      summary: Get application statistics
+      responses:
+        '200':
+          description: Application statistics
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/admin/users:
+    get:
+      summary: List users with admin-level filtering
+      parameters:
+      - name: filter
+        in: query
+        description: Filter criteria for users
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of users
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Bulk delete users
+      requestBody:
+        description: List of user IDs to delete
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+      responses:
+        '200':
+          description: Users deleted successfully
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/admin/users/bulk:
+    post:
+      summary: Bulk create users
+      requestBody:
+        description: List of users to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  password:
+                    type: string
+                required:
+                - username
+                - email
+                - password
+      responses:
+        '201':
+          description: Users created successfully
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/admin/logs:
+    get:
+      summary: Fetch application logs
+      responses:
+        '200':
+          description: Application logs
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/search/users:
+    get:
+      summary: Search for users based on criteria
+      parameters:
+      - name: q
+        in: query
+        description: Search query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of users matching criteria
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/search/roles:
+    get:
+      summary: Search for roles based on criteria
+      parameters:
+      - name: q
+        in: query
+        description: Search query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of roles matching criteria
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/config:
+    get:
+      summary: Get system configuration
+      responses:
+        '200':
+          description: System configuration
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+    put:
+      summary: Update system configuration
+      requestBody:
+        description: System configuration to update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                setting1:
+                  type: string
+                setting2:
+                  type: integer
+      responses:
+        '200':
+          description: System configuration updated successfully
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/audit/users/{id}:
+    get:
+      summary: Get audit logs for user by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the user
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Audit logs for the user
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/audit/roles/{id}:
+    get:
+      summary: Get audit logs for role by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the role
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Audit logs for the role
+        '404':
+          description: Role not found
+        '500':
+          description: Internal Server Error
+      security:
+      - bearerAuth: []
+  /api/health:
+    get:
+      summary: Health check for the application
+      responses:
+        '200':
+          description: Health status
+        '503':
+          description: Service Unavailable
+components:
+  schemas: {}
